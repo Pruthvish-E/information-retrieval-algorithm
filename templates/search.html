@@ -1,0 +1,61 @@
+<html>
+    <head>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='styles/mainpage.css') }}">
+
+        <script>
+            var engine = 1;
+            function clicker(arg){
+                if(arg=="happ"){
+                    document.querySelector("#happ").classList.add("active");
+                    document.querySelector("#es").classList.remove("active");
+                    engine = 1;
+                }
+                else if(arg=="es"){
+                    document.querySelector("#es").classList.add("active");
+                    document.querySelector("#happ").classList.remove("active");
+                    engine = 2;
+                }
+            }
+
+            function getResults(form){
+              obj = {engine : engine, query : form.search.value}
+              var xhr = new XMLHttpRequest();
+              xhr.onload = function(){
+                document.querySelector("#results").innerHTML = "";
+                this.response.hits.forEach(ele =>{
+                  newdiv = document.createElement("div");
+                  newdiv.innerHTML = `
+                    <h3>${ele._source.document_name + "/" + ele._source.Show}</h3>
+
+                    <p>${ele._source.Snippet}</p>
+                  `;
+                  document.querySelector("#results").appendChild(newdiv)
+                });
+              }
+              xhr.open("POST", "/search", true);
+              xhr.setRequestHeader("Content-Type", "application/json");
+              xhr.responseType = "json";
+              xhr.send(JSON.stringify(obj));
+              return false;
+            }
+        </script>
+    </head>
+
+    <body>
+        <div class="topnav">
+            <span class="active" onclick="clicker('happ')" id="happ">HAPP Search</span>
+            <span onclick="clicker('es')" id="es">Elastic Search</span>
+            <div class="search-container">
+              <form autocomplete="off" onsubmit="return getResults(this)">
+                <input type="text" placeholder="Search.." name="search">
+                <button type="submit"><i class="fa fa-search"></i></button>
+              </form>
+            </div>
+          </div>
+          <div id = "results">
+
+          </div>
+    </body>
+</html>

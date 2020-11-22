@@ -1,0 +1,5 @@
+.autogit
+*.pyc
+*.pkl
+data
+*.csv

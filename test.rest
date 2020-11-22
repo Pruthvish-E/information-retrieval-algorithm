@@ -1,0 +1,7 @@
+POST http://localhost:5000/search HTTP/1.1 
+Content-Type: application/json
+
+{
+"engine" : 2,
+"query":"interesting to see this against the backdrop of president trump coming into the oval office, saying things like climate change is somethingwhere every time a marketplace is closed down, another appears to replace it? inafew in a few minutes we are going to be talking about global warming"
+}
